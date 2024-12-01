@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
-from .forms import NoticiaForm, NoticiaFilterForm
+from .forms import NoticiaForm, NoticiaFilterForm, CategoriaForm, CategoriaFilterForm
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.shortcuts import render
 from .models import Noticia, Categoria
 
@@ -89,3 +90,48 @@ def index(request):
         'search_query': search_query,
     }
     return render(request, 'gerencia/index.html', contexto)
+
+def listagem_categoria(request):
+    categorias_list = Categoria.objects.all()
+    paginator = Paginator(categorias_list, 3)
+
+    page_number = request.GET.get('page')
+    categorias = paginator.get_page(page_number)
+
+    contexto = {
+        'categorias': categorias
+    }
+    return render(request, 'gerencia/listagem_categoria.html', contexto)
+def cadastro_categoria(request):
+    if request.method == 'POST':
+        form = CategoriaForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('gerencia:gerencia_inicial')
+    else:
+        form = CategoriaForm()
+    
+    contexto = {
+        'form': form
+    }
+    return render(request, 'gerencia/cadastro_categoria.html', contexto)
+
+def editar_categoria(request, id):
+    categoria = Categoria.objects.get(id=id)
+    if request.method == 'POST':
+        form = CategoriaForm(request.POST, instance=categoria)
+        if form.is_valid():
+            form.save()
+            return redirect('gerencia:listagem_categoria')
+    else:
+        form = CategoriaForm(instance=categoria)
+    
+    contexto = {
+        'form': form
+    }
+    return render(request, 'gerencia/cadastro_categoria.html', contexto)
+
+def excluir_categoria(request, id):
+    categoria = Categoria.objects.get(id=id)
+    categoria.delete()
+    return redirect('gerencia:listagem_categoria') 

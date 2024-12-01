@@ -1,0 +1,69 @@
+{% extends 'base_gerencia.html' %}
+
+{% block main %}
+
+     <!-- Page Heading -->
+     <h1 class="h3 mb-2 text-gray-800">Gerenciar Categorias</h1>
+     <p class="mb-4">Aqui você pode editar ou remover as Categorias existentes.</p>
+
+     <!-- Filtro de Categorias -->
+     <div class="card shadow mb-4">
+         <div class="card-header py-3">
+             <h6 class="m-0 font-weight-bold text-primary">Filtrar Categorias</h6>
+         </div>
+         <div class="card-body">
+            <form method="get">
+                <div class="form-group mb-3">
+                    <!-- Campo de Nome ocupando a linha completa -->
+                    <label for="titulo">Nome</label>
+                    {{formularioFiltro.nome }}
+                </div>
+                <button type="submit" class="btn btn-primary">Filtrar</button>
+            </form>
+            
+            
+         </div>
+     </div>
+
+     <!-- Categorias Table -->
+     <div class="card shadow mb-4">
+         <div class="card-header py-3">
+             <h6 class="m-0 font-weight-bold text-primary">Listagem de Categorias</h6>
+         </div>
+         <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                     <thead>
+                         <tr>
+                             <th style="width: 20%;">Categoria</th>
+                         </tr>
+                     </thead>
+                     <tbody>
+                         {% for categorias in categorias %}
+                         <tr>
+                             <td>{{ categorias.nome }}</td>
+                             <td>
+                                 <a href="{% url 'gerencia:editar_categoria' categorias.id %}" class="btn btn-warning btn-sm">Editar</a>
+                                 <a href="{% url 'gerencia:excluir_categoria' categorias.id %}" class="btn btn-danger btn-sm">Remover</a>
+                             </td>
+                         </tr>
+                         {% endfor %}
+                     </tbody>
+                 </table>
+             </div>
+         </div>
+     </div>
+
+<!-- Adicionar paginação -->
+
+
+     <div class="d-flex justify-content-end">
+        <a href="{% url 'gerencia:cadastro_categoria'%}" class="btn btn-primary btn-icon-split" style="margin-right: 3%;">
+            <span class="icon text-white-50">
+                <i class="fas fa-flag"></i>
+            </span>
+            <span class="text">Cadastrar Nova Categoria</span>
+        </a>
+    </div>
+
+{% endblock %}

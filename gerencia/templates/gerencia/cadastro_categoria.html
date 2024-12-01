@@ -1,0 +1,45 @@
+{% extends 'base_gerencia.html' %}
+
+{% block main %}
+
+<h1 class="h3 mb-4 text-gray-800">Cadastrar Nova Categoria</h1>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Informações da Notícia</h6>
+    </div>
+    <div class="card-body">
+     
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+              
+            <!-- Exibe erros gerais do formulário -->
+            {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+                <ul>
+                    {% for error in form.non_field_errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            <div class="form-group">
+                <label for="id_categoria">Nome</label>
+                {{ form.nome }}
+            </div>
+        
+            <button type="submit" class="btn btn-primary btn-icon-split">
+                <span class="icon text-white-50">
+                    <i class="fas fa-save"></i>
+                </span>
+                <span class="text">Salvar Notícia</span>
+            </button>
+        </form>
+
+
+    </div>
+</div>
+
+{% endblock %}

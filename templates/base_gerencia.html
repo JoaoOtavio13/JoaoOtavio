@@ -32,7 +32,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'index' %}">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
@@ -70,7 +70,9 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Entidades:</h6>
                         <a class="collapse-item" href="{% url 'gerencia:listagem_noticia' %}">Notícias</a>
-                        <a class="collapse-item" href="utilities-animation.html">Categoria de Notícias</a>
+                        <a class="collapse-item" href="{% url 'gerencia:cadastro_categoria' %}">Cadastro de Categoria</a>
+                        <a class="collapse-item" href="{% url 'gerencia:listagem_categoria' %}">Categoria de Notícias</a>
+                        <a class="collapse-item" href="{% url 'gerencia:cadastro_noticia' %}">Cadastro de Notícias</a>
                         <a class="collapse-item" href="{% url 'usuarios:lista_usuarios'  %}">Usuários</a>
                     </div>
                 </div>
