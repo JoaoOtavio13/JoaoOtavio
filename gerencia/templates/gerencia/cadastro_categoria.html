@@ -25,18 +25,23 @@
             </div>
             {% endif %}
 
-            <div class="form-group">
-                <label for="id_categoria">Nome</label>
-                {{ form.nome }}
-            </div>
-        
-            <button type="submit" class="btn btn-primary btn-icon-split">
-                <span class="icon text-white-50">
-                    <i class="fas fa-save"></i>
-                </span>
-                <span class="text">Salvar Notícia</span>
-            </button>
-        </form>
+            <form method="post" novalidate>
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ form.nome.label_tag }}
+                    {{ form.nome }}
+                    {% if form.nome.errors %}
+                        <div class="text-danger">
+                            {% for error in form.nome.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                <button type="submit" class="btn btn-primary">Salvar</button>
+                
+            </form>
+            
 
 
     </div>

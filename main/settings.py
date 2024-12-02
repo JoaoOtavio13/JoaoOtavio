@@ -133,4 +133,5 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 AUTH_USER_MODEL = 'usuarios.UserBlog'
 LOGIN_URL = 'usuarios:login'  # URL correta para o login
+LOGIN_URL = 'categorias:login'  # URL correta para o login
 LOGOUT_REDIRECT_URL = 'usuarios:login'  # Redirecionar para login após logout

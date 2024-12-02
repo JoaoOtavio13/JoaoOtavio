@@ -3,6 +3,7 @@ from .forms import NoticiaForm, NoticiaFilterForm, CategoriaForm, CategoriaFilte
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import render
+from django.contrib import messages
 from .models import Noticia, Categoria
 
 # Create your views here.
@@ -91,23 +92,31 @@ def index(request):
     }
     return render(request, 'gerencia/index.html', contexto)
 
+@login_required
 def listagem_categoria(request):
-    categorias_list = Categoria.objects.all()
+    categorias_list = Categoria.objects.all().order_by('nome')
+    categorias_filter = CategoriaFilterForm(request.GET or None)
+    if categorias_filter.is_valid():
+        if categorias_filter.cleaned_data['nome']:
+            categorias_list = categorias_list.filter(nome__icontains=categorias_filter.cleaned_data['nome']).order_by('nome')
     paginator = Paginator(categorias_list, 3)
-
     page_number = request.GET.get('page')
     categorias = paginator.get_page(page_number)
 
     contexto = {
-        'categorias': categorias
+        'categorias': categorias,
+        'categorias_filter': categorias_filter
     }
     return render(request, 'gerencia/listagem_categoria.html', contexto)
+
+@login_required
 def cadastro_categoria(request):
     if request.method == 'POST':
         form = CategoriaForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('gerencia:gerencia_inicial')
+            messages.success(request, "Categoria cadastrada com sucesso!")
+            return redirect('gerencia:listagem_categoria')
     else:
         form = CategoriaForm()
     
@@ -116,6 +125,7 @@ def cadastro_categoria(request):
     }
     return render(request, 'gerencia/cadastro_categoria.html', contexto)
 
+@login_required
 def editar_categoria(request, id):
     categoria = Categoria.objects.get(id=id)
     if request.method == 'POST':
@@ -131,6 +141,7 @@ def editar_categoria(request, id):
     }
     return render(request, 'gerencia/cadastro_categoria.html', contexto)
 
+@login_required
 def excluir_categoria(request, id):
     categoria = Categoria.objects.get(id=id)
     categoria.delete()

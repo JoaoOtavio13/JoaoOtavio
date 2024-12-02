@@ -46,13 +46,24 @@ class NoticiaFilterForm(forms.Form):
     )
   
 class CategoriaForm(forms.ModelForm):
-    
     class Meta:
         model = Categoria
-        fields = '__all__'
+        fields = ['nome']
         widgets = {
-            'nome': forms.TextInput(attrs={'class': 'form-control'}),  
+            'nome': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Digite o nome da categoria'}),
         }
+        labels = {
+            'nome': 'Nome da Categoria',
+        }
+
+    def clean_nome(self):
+        nome = self.cleaned_data.get('nome')
+        if not nome:
+            raise forms.ValidationError("O campo 'Nome' é obrigatório.")
+        if Categoria.objects.filter(nome__iexact=nome).exists():
+            raise forms.ValidationError("Já existe uma categoria com este nome.")
+        return nome
+
 
 class CategoriaFilterForm(forms.Form):
     nome = forms.CharField(

@@ -16,11 +16,10 @@
                 <div class="form-group mb-3">
                     <!-- Campo de Nome ocupando a linha completa -->
                     <label for="titulo">Nome</label>
-                    {{formularioFiltro.nome }}
+                    {{categorias_filter.nome }}
                 </div>
                 <button type="submit" class="btn btn-primary">Filtrar</button>
             </form>
-            
             
          </div>
      </div>
@@ -53,9 +52,18 @@
              </div>
          </div>
      </div>
-
+     {% if messages %}
+     <div class="alert alert-info">
+         {% for message in messages %}
+             <p>{{ message }}</p>
+         {% endfor %}
+     </div>
+ {% endif %}
+ 
 <!-- Adicionar paginação -->
-
+<div class="mt-3" style="margin-right: 40%;">
+    {% include 'components/pagination.html' with page_obj=categorias %}
+ </div>
 
      <div class="d-flex justify-content-end">
         <a href="{% url 'gerencia:cadastro_categoria'%}" class="btn btn-primary btn-icon-split" style="margin-right: 3%;">
